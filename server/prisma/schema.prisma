@@ -1,0 +1,99 @@
+datasource postgres {
+  provider = "postgresql"
+  url      = env("POSTGRESQL_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  appointments Appointment[]
+  chats        Chat[]
+  createdAt    DateTime      @default(now())
+  firstName    String?
+  id           String        @id @default(cuid())
+  lastName     String?
+  password     String
+  roles        String[]
+  updatedAt    DateTime      @updatedAt
+  username     String        @unique
+}
+
+model Doctor {
+  appointments    Appointment[]
+  chats           Chat[]
+  clinic          String?
+  createdAt       DateTime      @default(now())
+  dateLastPacient DateTime?
+  email           String?
+  id              String        @id @default(cuid())
+  lastPacient     Boolean?
+  mobile          String?
+  name            String?
+  services        String?
+  updatedAt       DateTime      @updatedAt
+  workHour        String?
+}
+
+model Secretary {
+  createdAt DateTime @default(now())
+  doctorId  String?
+  id        String   @id @default(cuid())
+  name      String?
+  updatedAt DateTime @updatedAt
+}
+
+model Appointment {
+  clinic     String?
+  createdAt  DateTime  @default(now())
+  date       DateTime?
+  doctorId   Doctor?   @relation(fields: [doctorIdId], references: [id])
+  doctorIdId String?
+  history    String?
+  id         String    @id @default(cuid())
+  services   String?
+  updatedAt  DateTime  @updatedAt
+  pacient    User?     @relation(fields: [pacientId], references: [id])
+  pacientId  String?
+}
+
+model Service {
+  createdAt    DateTime @default(now())
+  doctorId     String?
+  id           String   @id @default(cuid())
+  servicesName String?
+  updatedAt    DateTime @updatedAt
+}
+
+model Config {
+  apiKeyZoom    String?
+  apiPaypal     String?
+  apiSecretZoom String?
+  apsStripe     String?
+  apStripe      String?
+  createdAt     DateTime @default(now())
+  fmc_Firebase  String?
+  id            String   @id @default(cuid())
+  push          Boolean?
+  updatedAt     DateTime @updatedAt
+}
+
+model Chat {
+  createdAt  DateTime @default(now())
+  id         String   @id @default(cuid())
+  idDoctor   Doctor?  @relation(fields: [idDoctorId], references: [id])
+  idDoctorId String?
+  idUser     User?    @relation(fields: [idUserId], references: [id])
+  idUserId   String?
+  message    String?
+  updatedAt  DateTime @updatedAt
+}
+
+model Session {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  tokenId   String?
+  updatedAt DateTime @updatedAt
+  userId    String?
+}

@@ -1,0 +1,830 @@
+[
+  {
+    "role": "user",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Doctor",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Doctor",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Doctor",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Doctor",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Doctor",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Doctor",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Doctor",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Doctor",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Doctor",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Doctor",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Doctor",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Doctor",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Doctor",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Doctor",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Doctor",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Doctor",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Doctor",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Doctor",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Doctor",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Doctor",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Secretary",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Secretary",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Secretary",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Secretary",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Secretary",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Secretary",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Secretary",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Secretary",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Secretary",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Secretary",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Secretary",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Secretary",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Secretary",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Secretary",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Secretary",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Secretary",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Appointment",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Appointment",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Appointment",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Appointment",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Appointment",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Appointment",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Appointment",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Appointment",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Appointment",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Appointment",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Appointment",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Appointment",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Appointment",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Appointment",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Appointment",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Appointment",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Appointment",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Appointment",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Service",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Service",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Service",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Service",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Service",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Service",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Service",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Service",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Service",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Service",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Service",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Service",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Service",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Service",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Service",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Service",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Service",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Service",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Service",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Config",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Config",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Config",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Config",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Config",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Chat",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Chat",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Chat",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Chat",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Chat",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Chat",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Chat",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Chat",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Chat",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Chat",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Chat",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Chat",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Chat",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Chat",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Chat",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Chat",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Chat",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Chat",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Chat",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Chat",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Session",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Session",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Session",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Session",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Session",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Session",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Session",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Session",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Session",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Session",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Session",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Session",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Session",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Session",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Session",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Session",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Session",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "doctor",
+    "resource": "Session",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "secretary",
+    "resource": "Session",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Session",
+    "action": "read:any",
+    "attributes": "*"
+  }
+]
