@@ -6,10 +6,13 @@ import * as basicAuthGuard from "../../auth/basicAuth.guard";
 import * as abacUtil from "../../auth/abac.util";
 import { isRecordNotFoundError } from "../../prisma.util";
 import * as errors from "../../errors";
+import { Request } from "express";
+import { plainToClass } from "class-transformer";
 import { AppointmentService } from "../appointment.service";
 import { AppointmentCreateInput } from "./AppointmentCreateInput";
 import { AppointmentWhereInput } from "./AppointmentWhereInput";
 import { AppointmentWhereUniqueInput } from "./AppointmentWhereUniqueInput";
+import { AppointmentFindManyArgs } from "./AppointmentFindManyArgs";
 import { AppointmentUpdateInput } from "./AppointmentUpdateInput";
 import { Appointment } from "./Appointment";
 
@@ -30,7 +33,6 @@ export class AppointmentControllerBase {
   @swagger.ApiCreatedResponse({ type: Appointment })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async create(
-    @common.Query() query: {},
     @common.Body() data: AppointmentCreateInput,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Appointment> {
@@ -52,9 +54,7 @@ export class AppointmentControllerBase {
         `providing the properties: ${properties} on ${"Appointment"} creation is forbidden for roles: ${roles}`
       );
     }
-    // @ts-ignore
     return await this.service.create({
-      ...query,
       data: {
         ...data,
 
@@ -105,10 +105,17 @@ export class AppointmentControllerBase {
   })
   @swagger.ApiOkResponse({ type: [Appointment] })
   @swagger.ApiForbiddenResponse()
+  @swagger.ApiQuery({
+    type: () => AppointmentFindManyArgs,
+    style: "deepObject",
+    explode: true,
+  })
   async findMany(
-    @common.Query() query: AppointmentWhereInput,
+    @common.Req() request: Request,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Appointment[]> {
+    const args = plainToClass(AppointmentFindManyArgs, request.query);
+
     const permission = this.rolesBuilder.permission({
       role: userRoles,
       action: "read",
@@ -116,7 +123,7 @@ export class AppointmentControllerBase {
       resource: "Appointment",
     });
     const results = await this.service.findMany({
-      where: query,
+      ...args,
       select: {
         clinic: true,
         createdAt: true,
@@ -155,7 +162,6 @@ export class AppointmentControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async findOne(
-    @common.Query() query: {},
     @common.Param() params: AppointmentWhereUniqueInput,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Appointment | null> {
@@ -166,7 +172,6 @@ export class AppointmentControllerBase {
       resource: "Appointment",
     });
     const result = await this.service.findOne({
-      ...query,
       where: params,
       select: {
         clinic: true,
@@ -211,7 +216,6 @@ export class AppointmentControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async update(
-    @common.Query() query: {},
     @common.Param() params: AppointmentWhereUniqueInput,
     @common.Body()
     data: AppointmentUpdateInput,
@@ -236,9 +240,7 @@ export class AppointmentControllerBase {
       );
     }
     try {
-      // @ts-ignore
       return await this.service.update({
-        ...query,
         where: params,
         data: {
           ...data,
@@ -300,12 +302,10 @@ export class AppointmentControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async delete(
-    @common.Query() query: {},
     @common.Param() params: AppointmentWhereUniqueInput
   ): Promise<Appointment | null> {
     try {
       return await this.service.delete({
-        ...query,
         where: params,
         select: {
           clinic: true,

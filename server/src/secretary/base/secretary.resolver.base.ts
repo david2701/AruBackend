@@ -7,6 +7,7 @@ import * as gqlACGuard from "../../auth/gqlAC.guard";
 import * as gqlUserRoles from "../../auth/gqlUserRoles.decorator";
 import * as abacUtil from "../../auth/abac.util";
 import { isRecordNotFoundError } from "../../prisma.util";
+import { MetaQueryPayload } from "../../util/MetaQueryPayload";
 import { CreateSecretaryArgs } from "./CreateSecretaryArgs";
 import { UpdateSecretaryArgs } from "./UpdateSecretaryArgs";
 import { DeleteSecretaryArgs } from "./DeleteSecretaryArgs";
@@ -22,6 +23,25 @@ export class SecretaryResolverBase {
     protected readonly service: SecretaryService,
     protected readonly rolesBuilder: nestAccessControl.RolesBuilder
   ) {}
+
+  @graphql.Query(() => MetaQueryPayload)
+  @nestAccessControl.UseRoles({
+    resource: "Secretary",
+    action: "read",
+    possession: "any",
+  })
+  async _secretariesMeta(
+    @graphql.Args() args: SecretaryFindManyArgs
+  ): Promise<MetaQueryPayload> {
+    const results = await this.service.count({
+      ...args,
+      skip: undefined,
+      take: undefined,
+    });
+    return {
+      count: results,
+    };
+  }
 
   @graphql.Query(() => [Secretary])
   @nestAccessControl.UseRoles({

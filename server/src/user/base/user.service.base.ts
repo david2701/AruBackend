@@ -9,6 +9,12 @@ export class UserServiceBase {
     protected readonly passwordService: PasswordService
   ) {}
 
+  async count<T extends Prisma.UserFindManyArgs>(
+    args: Prisma.SelectSubset<T, Prisma.UserFindManyArgs>
+  ): Promise<number> {
+    return this.prisma.user.count(args);
+  }
+
   async findMany<T extends Prisma.UserFindManyArgs>(
     args: Prisma.SelectSubset<T, Prisma.UserFindManyArgs>
   ): Promise<User[]> {

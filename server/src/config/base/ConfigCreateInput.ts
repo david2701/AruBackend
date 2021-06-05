@@ -13,6 +13,7 @@ class ConfigCreateInput {
     nullable: true,
   })
   apiKeyZoom?: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -23,6 +24,7 @@ class ConfigCreateInput {
     nullable: true,
   })
   apiPaypal?: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -33,6 +35,7 @@ class ConfigCreateInput {
     nullable: true,
   })
   apiSecretZoom?: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -43,6 +46,7 @@ class ConfigCreateInput {
     nullable: true,
   })
   apsStripe?: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -53,6 +57,7 @@ class ConfigCreateInput {
     nullable: true,
   })
   apStripe?: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -63,6 +68,7 @@ class ConfigCreateInput {
     nullable: true,
   })
   fmc_Firebase?: string | null;
+
   @ApiProperty({
     required: false,
     type: Boolean,
@@ -73,5 +79,16 @@ class ConfigCreateInput {
     nullable: true,
   })
   push?: boolean | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  pushTag?: string | null;
 }
 export { ConfigCreateInput };

@@ -6,7 +6,6 @@ import { AppointmentModule } from "./appointment/appointment.module";
 import { ServiceModule } from "./service/service.module";
 import { ConfigModule } from "./config/config.module";
 import { ChatModule } from "./chat/chat.module";
-import { SessionModule } from "./session/session.module";
 import { ACLModule } from "./auth/acl.module";
 import { AuthModule } from "./auth/auth.module";
 import { MorganModule } from "nest-morgan";
@@ -25,7 +24,6 @@ import { GraphQLModule } from "@nestjs/graphql";
     ServiceModule,
     ConfigModule,
     ChatModule,
-    SessionModule,
     ACLModule,
     AuthModule,
     MorganModule,
