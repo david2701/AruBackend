@@ -7,6 +7,7 @@ import * as gqlACGuard from "../../auth/gqlAC.guard";
 import * as gqlUserRoles from "../../auth/gqlUserRoles.decorator";
 import * as abacUtil from "../../auth/abac.util";
 import { isRecordNotFoundError } from "../../prisma.util";
+import { MetaQueryPayload } from "../../util/MetaQueryPayload";
 import { CreateSessionArgs } from "./CreateSessionArgs";
 import { UpdateSessionArgs } from "./UpdateSessionArgs";
 import { DeleteSessionArgs } from "./DeleteSessionArgs";
@@ -22,6 +23,25 @@ export class SessionResolverBase {
     protected readonly service: SessionService,
     protected readonly rolesBuilder: nestAccessControl.RolesBuilder
   ) {}
+
+  @graphql.Query(() => MetaQueryPayload)
+  @nestAccessControl.UseRoles({
+    resource: "Session",
+    action: "read",
+    possession: "any",
+  })
+  async _sessionsMeta(
+    @graphql.Args() args: SessionFindManyArgs
+  ): Promise<MetaQueryPayload> {
+    const results = await this.service.count({
+      ...args,
+      skip: undefined,
+      take: undefined,
+    });
+    return {
+      count: results,
+    };
+  }
 
   @graphql.Query(() => [Session])
   @nestAccessControl.UseRoles({

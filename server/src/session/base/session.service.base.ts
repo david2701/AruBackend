@@ -4,6 +4,12 @@ import { Prisma, Session } from "@prisma/client";
 export class SessionServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
 
+  async count<T extends Prisma.SessionFindManyArgs>(
+    args: Prisma.SelectSubset<T, Prisma.SessionFindManyArgs>
+  ): Promise<number> {
+    return this.prisma.session.count(args);
+  }
+
   async findMany<T extends Prisma.SessionFindManyArgs>(
     args: Prisma.SelectSubset<T, Prisma.SessionFindManyArgs>
   ): Promise<Session[]> {

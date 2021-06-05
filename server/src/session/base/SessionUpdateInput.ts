@@ -13,6 +13,7 @@ class SessionUpdateInput {
     nullable: true,
   })
   tokenId?: string | null;
+
   @ApiProperty({
     required: false,
     type: String,

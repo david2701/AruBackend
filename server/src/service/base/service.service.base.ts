@@ -4,6 +4,12 @@ import { Prisma, Service } from "@prisma/client";
 export class ServiceServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
 
+  async count<T extends Prisma.ServiceFindManyArgs>(
+    args: Prisma.SelectSubset<T, Prisma.ServiceFindManyArgs>
+  ): Promise<number> {
+    return this.prisma.service.count(args);
+  }
+
   async findMany<T extends Prisma.ServiceFindManyArgs>(
     args: Prisma.SelectSubset<T, Prisma.ServiceFindManyArgs>
   ): Promise<Service[]> {

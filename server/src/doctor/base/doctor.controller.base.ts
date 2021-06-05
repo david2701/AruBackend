@@ -6,10 +6,13 @@ import * as basicAuthGuard from "../../auth/basicAuth.guard";
 import * as abacUtil from "../../auth/abac.util";
 import { isRecordNotFoundError } from "../../prisma.util";
 import * as errors from "../../errors";
+import { Request } from "express";
+import { plainToClass } from "class-transformer";
 import { DoctorService } from "../doctor.service";
 import { DoctorCreateInput } from "./DoctorCreateInput";
 import { DoctorWhereInput } from "./DoctorWhereInput";
 import { DoctorWhereUniqueInput } from "./DoctorWhereUniqueInput";
+import { DoctorFindManyArgs } from "./DoctorFindManyArgs";
 import { DoctorUpdateInput } from "./DoctorUpdateInput";
 import { Doctor } from "./Doctor";
 import { AppointmentWhereInput } from "../../appointment/base/AppointmentWhereInput";
@@ -34,7 +37,6 @@ export class DoctorControllerBase {
   @swagger.ApiCreatedResponse({ type: Doctor })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async create(
-    @common.Query() query: {},
     @common.Body() data: DoctorCreateInput,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Doctor> {
@@ -56,9 +58,7 @@ export class DoctorControllerBase {
         `providing the properties: ${properties} on ${"Doctor"} creation is forbidden for roles: ${roles}`
       );
     }
-    // @ts-ignore
     return await this.service.create({
-      ...query,
       data: data,
       select: {
         clinic: true,
@@ -86,10 +86,17 @@ export class DoctorControllerBase {
   })
   @swagger.ApiOkResponse({ type: [Doctor] })
   @swagger.ApiForbiddenResponse()
+  @swagger.ApiQuery({
+    type: () => DoctorFindManyArgs,
+    style: "deepObject",
+    explode: true,
+  })
   async findMany(
-    @common.Query() query: DoctorWhereInput,
+    @common.Req() request: Request,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Doctor[]> {
+    const args = plainToClass(DoctorFindManyArgs, request.query);
+
     const permission = this.rolesBuilder.permission({
       role: userRoles,
       action: "read",
@@ -97,7 +104,7 @@ export class DoctorControllerBase {
       resource: "Doctor",
     });
     const results = await this.service.findMany({
-      where: query,
+      ...args,
       select: {
         clinic: true,
         createdAt: true,
@@ -127,7 +134,6 @@ export class DoctorControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async findOne(
-    @common.Query() query: {},
     @common.Param() params: DoctorWhereUniqueInput,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Doctor | null> {
@@ -138,7 +144,6 @@ export class DoctorControllerBase {
       resource: "Doctor",
     });
     const result = await this.service.findOne({
-      ...query,
       where: params,
       select: {
         clinic: true,
@@ -174,7 +179,6 @@ export class DoctorControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async update(
-    @common.Query() query: {},
     @common.Param() params: DoctorWhereUniqueInput,
     @common.Body()
     data: DoctorUpdateInput,
@@ -199,9 +203,7 @@ export class DoctorControllerBase {
       );
     }
     try {
-      // @ts-ignore
       return await this.service.update({
-        ...query,
         where: params,
         data: data,
         select: {
@@ -240,12 +242,10 @@ export class DoctorControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async delete(
-    @common.Query() query: {},
     @common.Param() params: DoctorWhereUniqueInput
   ): Promise<Doctor | null> {
     try {
       return await this.service.delete({
-        ...query,
         where: params,
         select: {
           clinic: true,
@@ -279,11 +279,17 @@ export class DoctorControllerBase {
     action: "read",
     possession: "any",
   })
+  @swagger.ApiQuery({
+    type: () => AppointmentWhereInput,
+    style: "deepObject",
+    explode: true,
+  })
   async findManyAppointments(
+    @common.Req() request: Request,
     @common.Param() params: DoctorWhereUniqueInput,
-    @common.Query() query: AppointmentWhereInput,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Appointment[]> {
+    const query: AppointmentWhereInput = request.query;
     const permission = this.rolesBuilder.permission({
       role: userRoles,
       action: "read",
@@ -452,11 +458,17 @@ export class DoctorControllerBase {
     action: "read",
     possession: "any",
   })
+  @swagger.ApiQuery({
+    type: () => ChatWhereInput,
+    style: "deepObject",
+    explode: true,
+  })
   async findManyChats(
+    @common.Req() request: Request,
     @common.Param() params: DoctorWhereUniqueInput,
-    @common.Query() query: ChatWhereInput,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Chat[]> {
+    const query: ChatWhereInput = request.query;
     const permission = this.rolesBuilder.permission({
       role: userRoles,
       action: "read",

@@ -8,7 +8,7 @@ import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 class ChatCreateInput {
   @ApiProperty({
     required: false,
-    type: DoctorWhereUniqueInput,
+    type: () => DoctorWhereUniqueInput,
   })
   @ValidateNested()
   @Type(() => DoctorWhereUniqueInput)
@@ -17,9 +17,10 @@ class ChatCreateInput {
     nullable: true,
   })
   idDoctor?: DoctorWhereUniqueInput | null;
+
   @ApiProperty({
     required: false,
-    type: UserWhereUniqueInput,
+    type: () => UserWhereUniqueInput,
   })
   @ValidateNested()
   @Type(() => UserWhereUniqueInput)
@@ -28,6 +29,7 @@ class ChatCreateInput {
     nullable: true,
   })
   idUser?: UserWhereUniqueInput | null;
+
   @ApiProperty({
     required: false,
     type: String,

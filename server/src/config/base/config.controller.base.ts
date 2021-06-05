@@ -6,10 +6,13 @@ import * as basicAuthGuard from "../../auth/basicAuth.guard";
 import * as abacUtil from "../../auth/abac.util";
 import { isRecordNotFoundError } from "../../prisma.util";
 import * as errors from "../../errors";
+import { Request } from "express";
+import { plainToClass } from "class-transformer";
 import { ConfigService } from "../config.service";
 import { ConfigCreateInput } from "./ConfigCreateInput";
 import { ConfigWhereInput } from "./ConfigWhereInput";
 import { ConfigWhereUniqueInput } from "./ConfigWhereUniqueInput";
+import { ConfigFindManyArgs } from "./ConfigFindManyArgs";
 import { ConfigUpdateInput } from "./ConfigUpdateInput";
 import { Config } from "./Config";
 
@@ -30,7 +33,6 @@ export class ConfigControllerBase {
   @swagger.ApiCreatedResponse({ type: Config })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async create(
-    @common.Query() query: {},
     @common.Body() data: ConfigCreateInput,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Config> {
@@ -52,9 +54,7 @@ export class ConfigControllerBase {
         `providing the properties: ${properties} on ${"Config"} creation is forbidden for roles: ${roles}`
       );
     }
-    // @ts-ignore
     return await this.service.create({
-      ...query,
       data: data,
       select: {
         apiKeyZoom: true,
@@ -66,6 +66,7 @@ export class ConfigControllerBase {
         fmc_Firebase: true,
         id: true,
         push: true,
+        pushTag: true,
         updatedAt: true,
       },
     });
@@ -81,10 +82,17 @@ export class ConfigControllerBase {
   })
   @swagger.ApiOkResponse({ type: [Config] })
   @swagger.ApiForbiddenResponse()
+  @swagger.ApiQuery({
+    type: () => ConfigFindManyArgs,
+    style: "deepObject",
+    explode: true,
+  })
   async findMany(
-    @common.Query() query: ConfigWhereInput,
+    @common.Req() request: Request,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Config[]> {
+    const args = plainToClass(ConfigFindManyArgs, request.query);
+
     const permission = this.rolesBuilder.permission({
       role: userRoles,
       action: "read",
@@ -92,7 +100,7 @@ export class ConfigControllerBase {
       resource: "Config",
     });
     const results = await this.service.findMany({
-      where: query,
+      ...args,
       select: {
         apiKeyZoom: true,
         apiPaypal: true,
@@ -103,6 +111,7 @@ export class ConfigControllerBase {
         fmc_Firebase: true,
         id: true,
         push: true,
+        pushTag: true,
         updatedAt: true,
       },
     });
@@ -121,7 +130,6 @@ export class ConfigControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async findOne(
-    @common.Query() query: {},
     @common.Param() params: ConfigWhereUniqueInput,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Config | null> {
@@ -132,7 +140,6 @@ export class ConfigControllerBase {
       resource: "Config",
     });
     const result = await this.service.findOne({
-      ...query,
       where: params,
       select: {
         apiKeyZoom: true,
@@ -144,6 +151,7 @@ export class ConfigControllerBase {
         fmc_Firebase: true,
         id: true,
         push: true,
+        pushTag: true,
         updatedAt: true,
       },
     });
@@ -167,7 +175,6 @@ export class ConfigControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async update(
-    @common.Query() query: {},
     @common.Param() params: ConfigWhereUniqueInput,
     @common.Body()
     data: ConfigUpdateInput,
@@ -192,9 +199,7 @@ export class ConfigControllerBase {
       );
     }
     try {
-      // @ts-ignore
       return await this.service.update({
-        ...query,
         where: params,
         data: data,
         select: {
@@ -207,6 +212,7 @@ export class ConfigControllerBase {
           fmc_Firebase: true,
           id: true,
           push: true,
+          pushTag: true,
           updatedAt: true,
         },
       });
@@ -232,12 +238,10 @@ export class ConfigControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async delete(
-    @common.Query() query: {},
     @common.Param() params: ConfigWhereUniqueInput
   ): Promise<Config | null> {
     try {
       return await this.service.delete({
-        ...query,
         where: params,
         select: {
           apiKeyZoom: true,
@@ -249,6 +253,7 @@ export class ConfigControllerBase {
           fmc_Firebase: true,
           id: true,
           push: true,
+          pushTag: true,
           updatedAt: true,
         },
       });
