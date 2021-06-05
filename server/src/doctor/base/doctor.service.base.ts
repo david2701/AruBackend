@@ -4,6 +4,12 @@ import { Prisma, Doctor, Appointment, Chat } from "@prisma/client";
 export class DoctorServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
 
+  async count<T extends Prisma.DoctorFindManyArgs>(
+    args: Prisma.SelectSubset<T, Prisma.DoctorFindManyArgs>
+  ): Promise<number> {
+    return this.prisma.doctor.count(args);
+  }
+
   async findMany<T extends Prisma.DoctorFindManyArgs>(
     args: Prisma.SelectSubset<T, Prisma.DoctorFindManyArgs>
   ): Promise<Doctor[]> {

@@ -4,6 +4,12 @@ import { Prisma, Config } from "@prisma/client";
 export class ConfigServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
 
+  async count<T extends Prisma.ConfigFindManyArgs>(
+    args: Prisma.SelectSubset<T, Prisma.ConfigFindManyArgs>
+  ): Promise<number> {
+    return this.prisma.config.count(args);
+  }
+
   async findMany<T extends Prisma.ConfigFindManyArgs>(
     args: Prisma.SelectSubset<T, Prisma.ConfigFindManyArgs>
   ): Promise<Config[]> {

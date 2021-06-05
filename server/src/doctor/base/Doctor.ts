@@ -1,9 +1,35 @@
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional, IsDate, IsBoolean } from "class-validator";
+import { Appointment } from "../../appointment/base/Appointment";
+import {
+  ValidateNested,
+  IsOptional,
+  IsString,
+  IsDate,
+  IsBoolean,
+} from "class-validator";
 import { Type } from "class-transformer";
+import { Chat } from "../../chat/base/Chat";
 @ObjectType()
 class Doctor {
+  @ApiProperty({
+    required: false,
+    type: () => [Appointment],
+  })
+  @ValidateNested()
+  @Type(() => Appointment)
+  @IsOptional()
+  appointments?: Array<Appointment>;
+
+  @ApiProperty({
+    required: false,
+    type: () => [Chat],
+  })
+  @ValidateNested()
+  @Type(() => Chat)
+  @IsOptional()
+  chats?: Array<Chat>;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -14,6 +40,7 @@ class Doctor {
     nullable: true,
   })
   clinic!: string | null;
+
   @ApiProperty({
     required: true,
   })
@@ -21,6 +48,7 @@ class Doctor {
   @Type(() => Date)
   @Field(() => Date)
   createdAt!: Date;
+
   @ApiProperty({
     required: false,
   })
@@ -31,6 +59,7 @@ class Doctor {
     nullable: true,
   })
   dateLastPacient!: Date | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -41,6 +70,7 @@ class Doctor {
     nullable: true,
   })
   email!: string | null;
+
   @ApiProperty({
     required: true,
     type: String,
@@ -48,6 +78,7 @@ class Doctor {
   @IsString()
   @Field(() => String)
   id!: string;
+
   @ApiProperty({
     required: false,
     type: Boolean,
@@ -58,6 +89,7 @@ class Doctor {
     nullable: true,
   })
   lastPacient!: boolean | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -68,6 +100,7 @@ class Doctor {
     nullable: true,
   })
   mobile!: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -78,6 +111,7 @@ class Doctor {
     nullable: true,
   })
   name!: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -88,6 +122,7 @@ class Doctor {
     nullable: true,
   })
   services!: string | null;
+
   @ApiProperty({
     required: true,
   })
@@ -95,6 +130,7 @@ class Doctor {
   @Type(() => Date)
   @Field(() => Date)
   updatedAt!: Date;
+
   @ApiProperty({
     required: false,
     type: String,

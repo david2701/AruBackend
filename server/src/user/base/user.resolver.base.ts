@@ -7,6 +7,7 @@ import * as gqlACGuard from "../../auth/gqlAC.guard";
 import * as gqlUserRoles from "../../auth/gqlUserRoles.decorator";
 import * as abacUtil from "../../auth/abac.util";
 import { isRecordNotFoundError } from "../../prisma.util";
+import { MetaQueryPayload } from "../../util/MetaQueryPayload";
 import { CreateUserArgs } from "./CreateUserArgs";
 import { UpdateUserArgs } from "./UpdateUserArgs";
 import { DeleteUserArgs } from "./DeleteUserArgs";
@@ -26,6 +27,25 @@ export class UserResolverBase {
     protected readonly service: UserService,
     protected readonly rolesBuilder: nestAccessControl.RolesBuilder
   ) {}
+
+  @graphql.Query(() => MetaQueryPayload)
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "read",
+    possession: "any",
+  })
+  async _usersMeta(
+    @graphql.Args() args: UserFindManyArgs
+  ): Promise<MetaQueryPayload> {
+    const results = await this.service.count({
+      ...args,
+      skip: undefined,
+      take: undefined,
+    });
+    return {
+      count: results,
+    };
+  }
 
   @graphql.Query(() => [User])
   @nestAccessControl.UseRoles({
@@ -193,6 +213,11 @@ export class UserResolverBase {
       resource: "Appointment",
     });
     const results = await this.service.findAppointments(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
     return results.map((result) => permission.filter(result));
   }
 
@@ -214,6 +239,11 @@ export class UserResolverBase {
       resource: "Chat",
     });
     const results = await this.service.findChats(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
     return results.map((result) => permission.filter(result));
   }
 }

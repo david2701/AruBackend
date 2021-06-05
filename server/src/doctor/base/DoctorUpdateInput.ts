@@ -14,6 +14,7 @@ class DoctorUpdateInput {
     nullable: true,
   })
   clinic?: string | null;
+
   @ApiProperty({
     required: false,
   })
@@ -24,6 +25,7 @@ class DoctorUpdateInput {
     nullable: true,
   })
   dateLastPacient?: Date | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -34,6 +36,7 @@ class DoctorUpdateInput {
     nullable: true,
   })
   email?: string | null;
+
   @ApiProperty({
     required: false,
     type: Boolean,
@@ -44,6 +47,7 @@ class DoctorUpdateInput {
     nullable: true,
   })
   lastPacient?: boolean | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -54,6 +58,7 @@ class DoctorUpdateInput {
     nullable: true,
   })
   mobile?: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -64,6 +69,7 @@ class DoctorUpdateInput {
     nullable: true,
   })
   name?: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -74,6 +80,7 @@ class DoctorUpdateInput {
     nullable: true,
   })
   services?: string | null;
+
   @ApiProperty({
     required: false,
     type: String,

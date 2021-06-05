@@ -7,6 +7,7 @@ import * as gqlACGuard from "../../auth/gqlAC.guard";
 import * as gqlUserRoles from "../../auth/gqlUserRoles.decorator";
 import * as abacUtil from "../../auth/abac.util";
 import { isRecordNotFoundError } from "../../prisma.util";
+import { MetaQueryPayload } from "../../util/MetaQueryPayload";
 import { CreateConfigArgs } from "./CreateConfigArgs";
 import { UpdateConfigArgs } from "./UpdateConfigArgs";
 import { DeleteConfigArgs } from "./DeleteConfigArgs";
@@ -22,6 +23,25 @@ export class ConfigResolverBase {
     protected readonly service: ConfigService,
     protected readonly rolesBuilder: nestAccessControl.RolesBuilder
   ) {}
+
+  @graphql.Query(() => MetaQueryPayload)
+  @nestAccessControl.UseRoles({
+    resource: "Config",
+    action: "read",
+    possession: "any",
+  })
+  async _configsMeta(
+    @graphql.Args() args: ConfigFindManyArgs
+  ): Promise<MetaQueryPayload> {
+    const results = await this.service.count({
+      ...args,
+      skip: undefined,
+      take: undefined,
+    });
+    return {
+      count: results,
+    };
+  }
 
   @graphql.Query(() => [Config])
   @nestAccessControl.UseRoles({
