@@ -16,6 +16,7 @@ class AppointmentUpdateInput {
     nullable: true,
   })
   clinic?: string | null;
+
   @ApiProperty({
     required: false,
   })
@@ -26,9 +27,10 @@ class AppointmentUpdateInput {
     nullable: true,
   })
   date?: Date | null;
+
   @ApiProperty({
     required: false,
-    type: DoctorWhereUniqueInput,
+    type: () => DoctorWhereUniqueInput,
   })
   @ValidateNested()
   @Type(() => DoctorWhereUniqueInput)
@@ -37,6 +39,7 @@ class AppointmentUpdateInput {
     nullable: true,
   })
   doctorId?: DoctorWhereUniqueInput | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -47,6 +50,7 @@ class AppointmentUpdateInput {
     nullable: true,
   })
   history?: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -57,9 +61,10 @@ class AppointmentUpdateInput {
     nullable: true,
   })
   services?: string | null;
+
   @ApiProperty({
     required: false,
-    type: UserWhereUniqueInput,
+    type: () => UserWhereUniqueInput,
   })
   @ValidateNested()
   @Type(() => UserWhereUniqueInput)

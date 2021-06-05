@@ -6,10 +6,13 @@ import * as basicAuthGuard from "../../auth/basicAuth.guard";
 import * as abacUtil from "../../auth/abac.util";
 import { isRecordNotFoundError } from "../../prisma.util";
 import * as errors from "../../errors";
+import { Request } from "express";
+import { plainToClass } from "class-transformer";
 import { SessionService } from "../session.service";
 import { SessionCreateInput } from "./SessionCreateInput";
 import { SessionWhereInput } from "./SessionWhereInput";
 import { SessionWhereUniqueInput } from "./SessionWhereUniqueInput";
+import { SessionFindManyArgs } from "./SessionFindManyArgs";
 import { SessionUpdateInput } from "./SessionUpdateInput";
 import { Session } from "./Session";
 
@@ -30,7 +33,6 @@ export class SessionControllerBase {
   @swagger.ApiCreatedResponse({ type: Session })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async create(
-    @common.Query() query: {},
     @common.Body() data: SessionCreateInput,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Session> {
@@ -52,9 +54,7 @@ export class SessionControllerBase {
         `providing the properties: ${properties} on ${"Session"} creation is forbidden for roles: ${roles}`
       );
     }
-    // @ts-ignore
     return await this.service.create({
-      ...query,
       data: data,
       select: {
         createdAt: true,
@@ -76,10 +76,17 @@ export class SessionControllerBase {
   })
   @swagger.ApiOkResponse({ type: [Session] })
   @swagger.ApiForbiddenResponse()
+  @swagger.ApiQuery({
+    type: () => SessionFindManyArgs,
+    style: "deepObject",
+    explode: true,
+  })
   async findMany(
-    @common.Query() query: SessionWhereInput,
+    @common.Req() request: Request,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Session[]> {
+    const args = plainToClass(SessionFindManyArgs, request.query);
+
     const permission = this.rolesBuilder.permission({
       role: userRoles,
       action: "read",
@@ -87,7 +94,7 @@ export class SessionControllerBase {
       resource: "Session",
     });
     const results = await this.service.findMany({
-      where: query,
+      ...args,
       select: {
         createdAt: true,
         id: true,
@@ -111,7 +118,6 @@ export class SessionControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async findOne(
-    @common.Query() query: {},
     @common.Param() params: SessionWhereUniqueInput,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Session | null> {
@@ -122,7 +128,6 @@ export class SessionControllerBase {
       resource: "Session",
     });
     const result = await this.service.findOne({
-      ...query,
       where: params,
       select: {
         createdAt: true,
@@ -152,7 +157,6 @@ export class SessionControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async update(
-    @common.Query() query: {},
     @common.Param() params: SessionWhereUniqueInput,
     @common.Body()
     data: SessionUpdateInput,
@@ -177,9 +181,7 @@ export class SessionControllerBase {
       );
     }
     try {
-      // @ts-ignore
       return await this.service.update({
-        ...query,
         where: params,
         data: data,
         select: {
@@ -212,12 +214,10 @@ export class SessionControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async delete(
-    @common.Query() query: {},
     @common.Param() params: SessionWhereUniqueInput
   ): Promise<Session | null> {
     try {
       return await this.service.delete({
-        ...query,
         where: params,
         select: {
           createdAt: true,

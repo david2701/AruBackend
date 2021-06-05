@@ -11,6 +11,7 @@ class Secretary {
   @Type(() => Date)
   @Field(() => Date)
   createdAt!: Date;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -21,6 +22,7 @@ class Secretary {
     nullable: true,
   })
   doctorId!: string | null;
+
   @ApiProperty({
     required: true,
     type: String,
@@ -28,6 +30,7 @@ class Secretary {
   @IsString()
   @Field(() => String)
   id!: string;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -38,6 +41,7 @@ class Secretary {
     nullable: true,
   })
   name!: string | null;
+
   @ApiProperty({
     required: true,
   })

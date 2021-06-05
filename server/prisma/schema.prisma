@@ -76,6 +76,7 @@ model Config {
   fmc_Firebase  String?
   id            String   @id @default(cuid())
   push          Boolean?
+  pushTag       String?
   updatedAt     DateTime @updatedAt
 }
 

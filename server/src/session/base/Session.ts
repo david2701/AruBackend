@@ -11,6 +11,7 @@ class Session {
   @Type(() => Date)
   @Field(() => Date)
   createdAt!: Date;
+
   @ApiProperty({
     required: true,
     type: String,
@@ -18,6 +19,7 @@ class Session {
   @IsString()
   @Field(() => String)
   id!: string;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -28,6 +30,7 @@ class Session {
     nullable: true,
   })
   tokenId!: string | null;
+
   @ApiProperty({
     required: true,
   })
@@ -35,6 +38,7 @@ class Session {
   @Type(() => Date)
   @Field(() => Date)
   updatedAt!: Date;
+
   @ApiProperty({
     required: false,
     type: String,
