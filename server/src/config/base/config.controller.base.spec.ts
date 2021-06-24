@@ -20,6 +20,7 @@ const CREATE_INPUT = {
   fmc_Firebase: "exampleFmcFirebase",
   id: "exampleId",
   push: "true",
+  pushTag: "examplePushTag",
   updatedAt: new Date(),
 };
 const CREATE_RESULT = {
@@ -32,6 +33,7 @@ const CREATE_RESULT = {
   fmc_Firebase: "exampleFmcFirebase",
   id: "exampleId",
   push: "true",
+  pushTag: "examplePushTag",
   updatedAt: new Date(),
 };
 const FIND_MANY_RESULT = [
@@ -45,6 +47,7 @@ const FIND_MANY_RESULT = [
     fmc_Firebase: "exampleFmcFirebase",
     id: "exampleId",
     push: "true",
+    pushTag: "examplePushTag",
     updatedAt: new Date(),
   },
 ];
@@ -58,6 +61,7 @@ const FIND_ONE_RESULT = {
   fmc_Firebase: "exampleFmcFirebase",
   id: "exampleId",
   push: "true",
+  pushTag: "examplePushTag",
   updatedAt: new Date(),
 };
 

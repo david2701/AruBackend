@@ -14,6 +14,7 @@ class Config {
     nullable: true,
   })
   apiKeyZoom!: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -24,6 +25,7 @@ class Config {
     nullable: true,
   })
   apiPaypal!: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -34,6 +36,7 @@ class Config {
     nullable: true,
   })
   apiSecretZoom!: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -44,6 +47,7 @@ class Config {
     nullable: true,
   })
   apsStripe!: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -54,6 +58,7 @@ class Config {
     nullable: true,
   })
   apStripe!: string | null;
+
   @ApiProperty({
     required: true,
   })
@@ -61,6 +66,7 @@ class Config {
   @Type(() => Date)
   @Field(() => Date)
   createdAt!: Date;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -71,6 +77,7 @@ class Config {
     nullable: true,
   })
   fmc_Firebase!: string | null;
+
   @ApiProperty({
     required: true,
     type: String,
@@ -78,6 +85,7 @@ class Config {
   @IsString()
   @Field(() => String)
   id!: string;
+
   @ApiProperty({
     required: false,
     type: Boolean,
@@ -88,6 +96,18 @@ class Config {
     nullable: true,
   })
   push!: boolean | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  pushTag!: string | null;
+
   @ApiProperty({
     required: true,
   })

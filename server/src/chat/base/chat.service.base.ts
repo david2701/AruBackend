@@ -4,6 +4,12 @@ import { Prisma, Chat, Doctor, User } from "@prisma/client";
 export class ChatServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
 
+  async count<T extends Prisma.ChatFindManyArgs>(
+    args: Prisma.SelectSubset<T, Prisma.ChatFindManyArgs>
+  ): Promise<number> {
+    return this.prisma.chat.count(args);
+  }
+
   async findMany<T extends Prisma.ChatFindManyArgs>(
     args: Prisma.SelectSubset<T, Prisma.ChatFindManyArgs>
   ): Promise<Chat[]> {
