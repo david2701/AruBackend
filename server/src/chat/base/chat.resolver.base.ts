@@ -7,6 +7,7 @@ import * as gqlACGuard from "../../auth/gqlAC.guard";
 import * as gqlUserRoles from "../../auth/gqlUserRoles.decorator";
 import * as abacUtil from "../../auth/abac.util";
 import { isRecordNotFoundError } from "../../prisma.util";
+import { MetaQueryPayload } from "../../util/MetaQueryPayload";
 import { CreateChatArgs } from "./CreateChatArgs";
 import { UpdateChatArgs } from "./UpdateChatArgs";
 import { DeleteChatArgs } from "./DeleteChatArgs";
@@ -24,6 +25,25 @@ export class ChatResolverBase {
     protected readonly service: ChatService,
     protected readonly rolesBuilder: nestAccessControl.RolesBuilder
   ) {}
+
+  @graphql.Query(() => MetaQueryPayload)
+  @nestAccessControl.UseRoles({
+    resource: "Chat",
+    action: "read",
+    possession: "any",
+  })
+  async _chatsMeta(
+    @graphql.Args() args: ChatFindManyArgs
+  ): Promise<MetaQueryPayload> {
+    const results = await this.service.count({
+      ...args,
+      skip: undefined,
+      take: undefined,
+    });
+    return {
+      count: results,
+    };
+  }
 
   @graphql.Query(() => [Chat])
   @nestAccessControl.UseRoles({

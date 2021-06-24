@@ -6,10 +6,13 @@ import * as basicAuthGuard from "../../auth/basicAuth.guard";
 import * as abacUtil from "../../auth/abac.util";
 import { isRecordNotFoundError } from "../../prisma.util";
 import * as errors from "../../errors";
+import { Request } from "express";
+import { plainToClass } from "class-transformer";
 import { ServiceService } from "../service.service";
 import { ServiceCreateInput } from "./ServiceCreateInput";
 import { ServiceWhereInput } from "./ServiceWhereInput";
 import { ServiceWhereUniqueInput } from "./ServiceWhereUniqueInput";
+import { ServiceFindManyArgs } from "./ServiceFindManyArgs";
 import { ServiceUpdateInput } from "./ServiceUpdateInput";
 import { Service } from "./Service";
 
@@ -30,7 +33,6 @@ export class ServiceControllerBase {
   @swagger.ApiCreatedResponse({ type: Service })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async create(
-    @common.Query() query: {},
     @common.Body() data: ServiceCreateInput,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Service> {
@@ -52,9 +54,7 @@ export class ServiceControllerBase {
         `providing the properties: ${properties} on ${"Service"} creation is forbidden for roles: ${roles}`
       );
     }
-    // @ts-ignore
     return await this.service.create({
-      ...query,
       data: data,
       select: {
         createdAt: true,
@@ -76,10 +76,17 @@ export class ServiceControllerBase {
   })
   @swagger.ApiOkResponse({ type: [Service] })
   @swagger.ApiForbiddenResponse()
+  @swagger.ApiQuery({
+    type: () => ServiceFindManyArgs,
+    style: "deepObject",
+    explode: true,
+  })
   async findMany(
-    @common.Query() query: ServiceWhereInput,
+    @common.Req() request: Request,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Service[]> {
+    const args = plainToClass(ServiceFindManyArgs, request.query);
+
     const permission = this.rolesBuilder.permission({
       role: userRoles,
       action: "read",
@@ -87,7 +94,7 @@ export class ServiceControllerBase {
       resource: "Service",
     });
     const results = await this.service.findMany({
-      where: query,
+      ...args,
       select: {
         createdAt: true,
         doctorId: true,
@@ -111,7 +118,6 @@ export class ServiceControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async findOne(
-    @common.Query() query: {},
     @common.Param() params: ServiceWhereUniqueInput,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Service | null> {
@@ -122,7 +128,6 @@ export class ServiceControllerBase {
       resource: "Service",
     });
     const result = await this.service.findOne({
-      ...query,
       where: params,
       select: {
         createdAt: true,
@@ -152,7 +157,6 @@ export class ServiceControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async update(
-    @common.Query() query: {},
     @common.Param() params: ServiceWhereUniqueInput,
     @common.Body()
     data: ServiceUpdateInput,
@@ -177,9 +181,7 @@ export class ServiceControllerBase {
       );
     }
     try {
-      // @ts-ignore
       return await this.service.update({
-        ...query,
         where: params,
         data: data,
         select: {
@@ -212,12 +214,10 @@ export class ServiceControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async delete(
-    @common.Query() query: {},
     @common.Param() params: ServiceWhereUniqueInput
   ): Promise<Service | null> {
     try {
       return await this.service.delete({
-        ...query,
         where: params,
         select: {
           createdAt: true,
