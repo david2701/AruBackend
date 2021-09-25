@@ -13,6 +13,7 @@ class SecretaryUpdateInput {
     nullable: true,
   })
   doctorId?: string | null;
+
   @ApiProperty({
     required: false,
     type: String,

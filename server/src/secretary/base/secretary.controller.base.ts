@@ -2,14 +2,17 @@ import * as common from "@nestjs/common";
 import * as swagger from "@nestjs/swagger";
 import * as nestMorgan from "nest-morgan";
 import * as nestAccessControl from "nest-access-control";
-import * as basicAuthGuard from "../../auth/basicAuth.guard";
+import * as defaultAuthGuard from "../../auth/defaultAuth.guard";
 import * as abacUtil from "../../auth/abac.util";
 import { isRecordNotFoundError } from "../../prisma.util";
 import * as errors from "../../errors";
+import { Request } from "express";
+import { plainToClass } from "class-transformer";
 import { SecretaryService } from "../secretary.service";
 import { SecretaryCreateInput } from "./SecretaryCreateInput";
 import { SecretaryWhereInput } from "./SecretaryWhereInput";
 import { SecretaryWhereUniqueInput } from "./SecretaryWhereUniqueInput";
+import { SecretaryFindManyArgs } from "./SecretaryFindManyArgs";
 import { SecretaryUpdateInput } from "./SecretaryUpdateInput";
 import { Secretary } from "./Secretary";
 
@@ -20,7 +23,10 @@ export class SecretaryControllerBase {
   ) {}
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   @common.Post()
   @nestAccessControl.UseRoles({
     resource: "Secretary",
@@ -30,7 +36,6 @@ export class SecretaryControllerBase {
   @swagger.ApiCreatedResponse({ type: Secretary })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async create(
-    @common.Query() query: {},
     @common.Body() data: SecretaryCreateInput,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Secretary> {
@@ -52,9 +57,7 @@ export class SecretaryControllerBase {
         `providing the properties: ${properties} on ${"Secretary"} creation is forbidden for roles: ${roles}`
       );
     }
-    // @ts-ignore
     return await this.service.create({
-      ...query,
       data: data,
       select: {
         createdAt: true,
@@ -67,7 +70,10 @@ export class SecretaryControllerBase {
   }
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   @common.Get()
   @nestAccessControl.UseRoles({
     resource: "Secretary",
@@ -76,10 +82,17 @@ export class SecretaryControllerBase {
   })
   @swagger.ApiOkResponse({ type: [Secretary] })
   @swagger.ApiForbiddenResponse()
+  @swagger.ApiQuery({
+    type: () => SecretaryFindManyArgs,
+    style: "deepObject",
+    explode: true,
+  })
   async findMany(
-    @common.Query() query: SecretaryWhereInput,
+    @common.Req() request: Request,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Secretary[]> {
+    const args = plainToClass(SecretaryFindManyArgs, request.query);
+
     const permission = this.rolesBuilder.permission({
       role: userRoles,
       action: "read",
@@ -87,7 +100,7 @@ export class SecretaryControllerBase {
       resource: "Secretary",
     });
     const results = await this.service.findMany({
-      where: query,
+      ...args,
       select: {
         createdAt: true,
         doctorId: true,
@@ -100,7 +113,10 @@ export class SecretaryControllerBase {
   }
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   @common.Get("/:id")
   @nestAccessControl.UseRoles({
     resource: "Secretary",
@@ -111,7 +127,6 @@ export class SecretaryControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async findOne(
-    @common.Query() query: {},
     @common.Param() params: SecretaryWhereUniqueInput,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Secretary | null> {
@@ -122,7 +137,6 @@ export class SecretaryControllerBase {
       resource: "Secretary",
     });
     const result = await this.service.findOne({
-      ...query,
       where: params,
       select: {
         createdAt: true,
@@ -141,7 +155,10 @@ export class SecretaryControllerBase {
   }
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   @common.Patch("/:id")
   @nestAccessControl.UseRoles({
     resource: "Secretary",
@@ -152,7 +169,6 @@ export class SecretaryControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async update(
-    @common.Query() query: {},
     @common.Param() params: SecretaryWhereUniqueInput,
     @common.Body()
     data: SecretaryUpdateInput,
@@ -177,9 +193,7 @@ export class SecretaryControllerBase {
       );
     }
     try {
-      // @ts-ignore
       return await this.service.update({
-        ...query,
         where: params,
         data: data,
         select: {
@@ -201,7 +215,10 @@ export class SecretaryControllerBase {
   }
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   @common.Delete("/:id")
   @nestAccessControl.UseRoles({
     resource: "Secretary",
@@ -212,12 +229,10 @@ export class SecretaryControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async delete(
-    @common.Query() query: {},
     @common.Param() params: SecretaryWhereUniqueInput
   ): Promise<Secretary | null> {
     try {
       return await this.service.delete({
-        ...query,
         where: params,
         select: {
           createdAt: true,

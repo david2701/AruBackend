@@ -1,58 +1,19 @@
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsOptional, IsString } from "class-validator";
+import { StringFilter } from "../../util/StringFilter";
 import { Type } from "class-transformer";
+import { IsOptional } from "class-validator";
 @InputType()
 class ServiceWhereInput {
   @ApiProperty({
     required: false,
+    type: StringFilter,
   })
-  @IsDate()
-  @Type(() => Date)
+  @Type(() => StringFilter)
   @IsOptional()
-  @Field(() => Date, {
+  @Field(() => StringFilter, {
     nullable: true,
   })
-  createdAt?: Date;
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  doctorId?: string | null;
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  id?: string;
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  servicesName?: string | null;
-  @ApiProperty({
-    required: false,
-  })
-  @IsDate()
-  @Type(() => Date)
-  @IsOptional()
-  @Field(() => Date, {
-    nullable: true,
-  })
-  updatedAt?: Date;
+  id?: StringFilter;
 }
 export { ServiceWhereInput };

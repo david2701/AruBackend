@@ -2,14 +2,17 @@ import * as common from "@nestjs/common";
 import * as swagger from "@nestjs/swagger";
 import * as nestMorgan from "nest-morgan";
 import * as nestAccessControl from "nest-access-control";
-import * as basicAuthGuard from "../../auth/basicAuth.guard";
+import * as defaultAuthGuard from "../../auth/defaultAuth.guard";
 import * as abacUtil from "../../auth/abac.util";
 import { isRecordNotFoundError } from "../../prisma.util";
 import * as errors from "../../errors";
+import { Request } from "express";
+import { plainToClass } from "class-transformer";
 import { ChatService } from "../chat.service";
 import { ChatCreateInput } from "./ChatCreateInput";
 import { ChatWhereInput } from "./ChatWhereInput";
 import { ChatWhereUniqueInput } from "./ChatWhereUniqueInput";
+import { ChatFindManyArgs } from "./ChatFindManyArgs";
 import { ChatUpdateInput } from "./ChatUpdateInput";
 import { Chat } from "./Chat";
 
@@ -20,7 +23,10 @@ export class ChatControllerBase {
   ) {}
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   @common.Post()
   @nestAccessControl.UseRoles({
     resource: "Chat",
@@ -30,7 +36,6 @@ export class ChatControllerBase {
   @swagger.ApiCreatedResponse({ type: Chat })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async create(
-    @common.Query() query: {},
     @common.Body() data: ChatCreateInput,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Chat> {
@@ -52,9 +57,7 @@ export class ChatControllerBase {
         `providing the properties: ${properties} on ${"Chat"} creation is forbidden for roles: ${roles}`
       );
     }
-    // @ts-ignore
     return await this.service.create({
-      ...query,
       data: {
         ...data,
 
@@ -93,7 +96,10 @@ export class ChatControllerBase {
   }
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   @common.Get()
   @nestAccessControl.UseRoles({
     resource: "Chat",
@@ -102,10 +108,17 @@ export class ChatControllerBase {
   })
   @swagger.ApiOkResponse({ type: [Chat] })
   @swagger.ApiForbiddenResponse()
+  @swagger.ApiQuery({
+    type: () => ChatFindManyArgs,
+    style: "deepObject",
+    explode: true,
+  })
   async findMany(
-    @common.Query() query: ChatWhereInput,
+    @common.Req() request: Request,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Chat[]> {
+    const args = plainToClass(ChatFindManyArgs, request.query);
+
     const permission = this.rolesBuilder.permission({
       role: userRoles,
       action: "read",
@@ -113,7 +126,7 @@ export class ChatControllerBase {
       resource: "Chat",
     });
     const results = await this.service.findMany({
-      where: query,
+      ...args,
       select: {
         createdAt: true,
         id: true,
@@ -138,7 +151,10 @@ export class ChatControllerBase {
   }
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   @common.Get("/:id")
   @nestAccessControl.UseRoles({
     resource: "Chat",
@@ -149,7 +165,6 @@ export class ChatControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async findOne(
-    @common.Query() query: {},
     @common.Param() params: ChatWhereUniqueInput,
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<Chat | null> {
@@ -160,7 +175,6 @@ export class ChatControllerBase {
       resource: "Chat",
     });
     const result = await this.service.findOne({
-      ...query,
       where: params,
       select: {
         createdAt: true,
@@ -191,7 +205,10 @@ export class ChatControllerBase {
   }
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   @common.Patch("/:id")
   @nestAccessControl.UseRoles({
     resource: "Chat",
@@ -202,7 +219,6 @@ export class ChatControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async update(
-    @common.Query() query: {},
     @common.Param() params: ChatWhereUniqueInput,
     @common.Body()
     data: ChatUpdateInput,
@@ -227,9 +243,7 @@ export class ChatControllerBase {
       );
     }
     try {
-      // @ts-ignore
       return await this.service.update({
-        ...query,
         where: params,
         data: {
           ...data,
@@ -277,7 +291,10 @@ export class ChatControllerBase {
   }
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   @common.Delete("/:id")
   @nestAccessControl.UseRoles({
     resource: "Chat",
@@ -288,12 +305,10 @@ export class ChatControllerBase {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async delete(
-    @common.Query() query: {},
     @common.Param() params: ChatWhereUniqueInput
   ): Promise<Chat | null> {
     try {
       return await this.service.delete({
-        ...query,
         where: params,
         select: {
           createdAt: true,

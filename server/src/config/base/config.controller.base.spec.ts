@@ -3,7 +3,7 @@ import { INestApplication, HttpStatus, ExecutionContext } from "@nestjs/common";
 import request from "supertest";
 import { MorganModule } from "nest-morgan";
 import { ACGuard } from "nest-access-control";
-import { BasicAuthGuard } from "../../auth/basicAuth.guard";
+import { DefaultAuthGuard } from "../../auth/defaultAuth.guard";
 import { ACLModule } from "../../auth/acl.module";
 import { ConfigController } from "../config.controller";
 import { ConfigService } from "../config.service";
@@ -11,6 +11,7 @@ import { ConfigService } from "../config.service";
 const nonExistingId = "nonExistingId";
 const existingId = "existingId";
 const CREATE_INPUT = {
+  apiAgora: "exampleApiAgora",
   apiKeyZoom: "exampleApiKeyZoom",
   apiPaypal: "exampleApiPaypal",
   apiSecretZoom: "exampleApiSecretZoom",
@@ -20,9 +21,11 @@ const CREATE_INPUT = {
   fmc_Firebase: "exampleFmcFirebase",
   id: "exampleId",
   push: "true",
+  pushTag: "examplePushTag",
   updatedAt: new Date(),
 };
 const CREATE_RESULT = {
+  apiAgora: "exampleApiAgora",
   apiKeyZoom: "exampleApiKeyZoom",
   apiPaypal: "exampleApiPaypal",
   apiSecretZoom: "exampleApiSecretZoom",
@@ -32,10 +35,12 @@ const CREATE_RESULT = {
   fmc_Firebase: "exampleFmcFirebase",
   id: "exampleId",
   push: "true",
+  pushTag: "examplePushTag",
   updatedAt: new Date(),
 };
 const FIND_MANY_RESULT = [
   {
+    apiAgora: "exampleApiAgora",
     apiKeyZoom: "exampleApiKeyZoom",
     apiPaypal: "exampleApiPaypal",
     apiSecretZoom: "exampleApiSecretZoom",
@@ -45,10 +50,12 @@ const FIND_MANY_RESULT = [
     fmc_Firebase: "exampleFmcFirebase",
     id: "exampleId",
     push: "true",
+    pushTag: "examplePushTag",
     updatedAt: new Date(),
   },
 ];
 const FIND_ONE_RESULT = {
+  apiAgora: "exampleApiAgora",
   apiKeyZoom: "exampleApiKeyZoom",
   apiPaypal: "exampleApiPaypal",
   apiSecretZoom: "exampleApiSecretZoom",
@@ -58,6 +65,7 @@ const FIND_ONE_RESULT = {
   fmc_Firebase: "exampleFmcFirebase",
   id: "exampleId",
   push: "true",
+  pushTag: "examplePushTag",
   updatedAt: new Date(),
 };
 
@@ -107,7 +115,7 @@ describe("Config", () => {
       controllers: [ConfigController],
       imports: [MorganModule.forRoot(), ACLModule],
     })
-      .overrideGuard(BasicAuthGuard)
+      .overrideGuard(DefaultAuthGuard)
       .useValue(basicAuthGuard)
       .overrideGuard(ACGuard)
       .useValue(acGuard)
