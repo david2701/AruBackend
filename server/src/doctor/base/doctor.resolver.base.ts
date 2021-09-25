@@ -2,11 +2,12 @@ import * as common from "@nestjs/common";
 import * as graphql from "@nestjs/graphql";
 import * as apollo from "apollo-server-express";
 import * as nestAccessControl from "nest-access-control";
-import * as gqlBasicAuthGuard from "../../auth/gqlBasicAuth.guard";
+import * as gqlDefaultAuthGuard from "../../auth/gqlDefaultAuth.guard";
 import * as gqlACGuard from "../../auth/gqlAC.guard";
 import * as gqlUserRoles from "../../auth/gqlUserRoles.decorator";
 import * as abacUtil from "../../auth/abac.util";
 import { isRecordNotFoundError } from "../../prisma.util";
+import { MetaQueryPayload } from "../../util/MetaQueryPayload";
 import { CreateDoctorArgs } from "./CreateDoctorArgs";
 import { UpdateDoctorArgs } from "./UpdateDoctorArgs";
 import { DeleteDoctorArgs } from "./DeleteDoctorArgs";
@@ -20,12 +21,34 @@ import { Chat } from "../../chat/base/Chat";
 import { DoctorService } from "../doctor.service";
 
 @graphql.Resolver(() => Doctor)
-@common.UseGuards(gqlBasicAuthGuard.GqlBasicAuthGuard, gqlACGuard.GqlACGuard)
+@common.UseGuards(
+  gqlDefaultAuthGuard.GqlDefaultAuthGuard,
+  gqlACGuard.GqlACGuard
+)
 export class DoctorResolverBase {
   constructor(
     protected readonly service: DoctorService,
     protected readonly rolesBuilder: nestAccessControl.RolesBuilder
   ) {}
+
+  @graphql.Query(() => MetaQueryPayload)
+  @nestAccessControl.UseRoles({
+    resource: "Doctor",
+    action: "read",
+    possession: "any",
+  })
+  async _doctorsMeta(
+    @graphql.Args() args: DoctorFindManyArgs
+  ): Promise<MetaQueryPayload> {
+    const results = await this.service.count({
+      ...args,
+      skip: undefined,
+      take: undefined,
+    });
+    return {
+      count: results,
+    };
+  }
 
   @graphql.Query(() => [Doctor])
   @nestAccessControl.UseRoles({
@@ -195,6 +218,11 @@ export class DoctorResolverBase {
       resource: "Appointment",
     });
     const results = await this.service.findAppointments(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
     return results.map((result) => permission.filter(result));
   }
 
@@ -216,6 +244,11 @@ export class DoctorResolverBase {
       resource: "Chat",
     });
     const results = await this.service.findChats(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
     return results.map((result) => permission.filter(result));
   }
 }

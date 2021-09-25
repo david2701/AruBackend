@@ -1,10 +1,18 @@
 {
-  "dataServiceGeneratorVersion": "0.5.2",
+  "dataServiceGeneratorVersion": "0.9.0",
   "appInfo": {
     "name": "AruCare",
     "description": "AruCare",
-    "version": "njsf6pew",
+    "version": "dzmjrlpi",
     "id": "ckmndeo9a102078910s63qp9kntd",
-    "url": "https://app.amplication.com/ckmndeo9a102078910s63qp9kntd"
+    "url": "https://app.amplication.com/ckmndeo9a102078910s63qp9kntd",
+    "settings": {
+      "dbHost": "localhost",
+      "dbName": "",
+      "dbPassword": "admin",
+      "dbPort": 5432,
+      "dbUser": "admin",
+      "appId": "ckmndeo9a102078910s63qp9kntd"
+    }
   }
 }

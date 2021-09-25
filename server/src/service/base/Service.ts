@@ -11,6 +11,7 @@ class Service {
   @Type(() => Date)
   @Field(() => Date)
   createdAt!: Date;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -21,6 +22,7 @@ class Service {
     nullable: true,
   })
   doctorId!: string | null;
+
   @ApiProperty({
     required: true,
     type: String,
@@ -28,6 +30,7 @@ class Service {
   @IsString()
   @Field(() => String)
   id!: string;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -38,6 +41,7 @@ class Service {
     nullable: true,
   })
   servicesName!: string | null;
+
   @ApiProperty({
     required: true,
   })

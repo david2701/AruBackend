@@ -3,7 +3,7 @@ import { INestApplication, HttpStatus, ExecutionContext } from "@nestjs/common";
 import request from "supertest";
 import { MorganModule } from "nest-morgan";
 import { ACGuard } from "nest-access-control";
-import { BasicAuthGuard } from "../../auth/basicAuth.guard";
+import { DefaultAuthGuard } from "../../auth/defaultAuth.guard";
 import { ACLModule } from "../../auth/acl.module";
 import { ChatController } from "../chat.controller";
 import { ChatService } from "../chat.service";
@@ -83,7 +83,7 @@ describe("Chat", () => {
       controllers: [ChatController],
       imports: [MorganModule.forRoot(), ACLModule],
     })
-      .overrideGuard(BasicAuthGuard)
+      .overrideGuard(DefaultAuthGuard)
       .useValue(basicAuthGuard)
       .overrideGuard(ACGuard)
       .useValue(acGuard)

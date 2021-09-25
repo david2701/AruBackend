@@ -67,6 +67,7 @@ model Service {
 }
 
 model Config {
+  apiAgora      String   @unique
   apiKeyZoom    String?
   apiPaypal     String?
   apiSecretZoom String?
@@ -76,6 +77,8 @@ model Config {
   fmc_Firebase  String?
   id            String   @id @default(cuid())
   push          Boolean?
+  pushTag       String?
+  timeRefresh   Json?    @unique
   updatedAt     DateTime @updatedAt
 }
 
@@ -88,12 +91,4 @@ model Chat {
   idUserId   String?
   message    String?
   updatedAt  DateTime @updatedAt
-}
-
-model Session {
-  createdAt DateTime @default(now())
-  id        String   @id @default(cuid())
-  tokenId   String?
-  updatedAt DateTime @updatedAt
-  userId    String?
 }

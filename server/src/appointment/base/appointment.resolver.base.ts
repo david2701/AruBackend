@@ -2,11 +2,12 @@ import * as common from "@nestjs/common";
 import * as graphql from "@nestjs/graphql";
 import * as apollo from "apollo-server-express";
 import * as nestAccessControl from "nest-access-control";
-import * as gqlBasicAuthGuard from "../../auth/gqlBasicAuth.guard";
+import * as gqlDefaultAuthGuard from "../../auth/gqlDefaultAuth.guard";
 import * as gqlACGuard from "../../auth/gqlAC.guard";
 import * as gqlUserRoles from "../../auth/gqlUserRoles.decorator";
 import * as abacUtil from "../../auth/abac.util";
 import { isRecordNotFoundError } from "../../prisma.util";
+import { MetaQueryPayload } from "../../util/MetaQueryPayload";
 import { CreateAppointmentArgs } from "./CreateAppointmentArgs";
 import { UpdateAppointmentArgs } from "./UpdateAppointmentArgs";
 import { DeleteAppointmentArgs } from "./DeleteAppointmentArgs";
@@ -18,12 +19,34 @@ import { User } from "../../user/base/User";
 import { AppointmentService } from "../appointment.service";
 
 @graphql.Resolver(() => Appointment)
-@common.UseGuards(gqlBasicAuthGuard.GqlBasicAuthGuard, gqlACGuard.GqlACGuard)
+@common.UseGuards(
+  gqlDefaultAuthGuard.GqlDefaultAuthGuard,
+  gqlACGuard.GqlACGuard
+)
 export class AppointmentResolverBase {
   constructor(
     protected readonly service: AppointmentService,
     protected readonly rolesBuilder: nestAccessControl.RolesBuilder
   ) {}
+
+  @graphql.Query(() => MetaQueryPayload)
+  @nestAccessControl.UseRoles({
+    resource: "Appointment",
+    action: "read",
+    possession: "any",
+  })
+  async _appointmentsMeta(
+    @graphql.Args() args: AppointmentFindManyArgs
+  ): Promise<MetaQueryPayload> {
+    const results = await this.service.count({
+      ...args,
+      skip: undefined,
+      take: undefined,
+    });
+    return {
+      count: results,
+    };
+  }
 
   @graphql.Query(() => [Appointment])
   @nestAccessControl.UseRoles({

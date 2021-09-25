@@ -1,6 +1,8 @@
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional, IsBoolean } from "class-validator";
+import { IsString, IsOptional, IsBoolean, IsJSON } from "class-validator";
+import { GraphQLJSONObject } from "graphql-type-json";
+import { JsonValue } from "type-fest";
 @InputType()
 class ConfigUpdateInput {
   @ApiProperty({
@@ -12,7 +14,19 @@ class ConfigUpdateInput {
   @Field(() => String, {
     nullable: true,
   })
+  apiAgora?: string;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
   apiKeyZoom?: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -23,6 +37,7 @@ class ConfigUpdateInput {
     nullable: true,
   })
   apiPaypal?: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -33,6 +48,7 @@ class ConfigUpdateInput {
     nullable: true,
   })
   apiSecretZoom?: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -43,6 +59,7 @@ class ConfigUpdateInput {
     nullable: true,
   })
   apsStripe?: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -53,6 +70,7 @@ class ConfigUpdateInput {
     nullable: true,
   })
   apStripe?: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -63,6 +81,7 @@ class ConfigUpdateInput {
     nullable: true,
   })
   fmc_Firebase?: string | null;
+
   @ApiProperty({
     required: false,
     type: Boolean,
@@ -73,5 +92,26 @@ class ConfigUpdateInput {
     nullable: true,
   })
   push?: boolean | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  pushTag?: string | null;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsJSON()
+  @IsOptional()
+  @Field(() => GraphQLJSONObject, {
+    nullable: true,
+  })
+  timeRefresh?: JsonValue | null;
 }
 export { ConfigUpdateInput };
